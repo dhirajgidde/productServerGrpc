@@ -12,7 +12,7 @@ import(
 	_ "github.com/go-sql-driver/mysql"
 	"google.golang.org/grpc"
 
-	messager "github.com/dhirajgidde/productServerGrpc/productsProto"
+	productPB "github.com/dhirajgidde/productServerGrpc/productsProto"
 	
 )
 
@@ -27,7 +27,7 @@ type Products struct {
 //server struct 
 type server struct {
 	db      *sql.DB
-	messager .UnimplementedMessageReceiverServer
+	productPB .UnimplementedMessageReceiverServer
 }
 
 func main() {
@@ -49,11 +49,11 @@ func main() {
 		log.Println(err)
 		return
 	}
-	messager.RegisterMessageReceiverServer(grpcServer, s)
+	productPB.RegisterMessageReceiverServer(grpcServer, s)
 	
-	lis, err := net.Listen("tcp", ":9000")
+	lis, err := net.Listen("tcp", ":9001")
 	if err != nil {
-		log.Fatalln("Could not listen on port 9000:", err)
+		log.Fatalln("Could not listen on port 9001:", err)
 		return
 	}
 	if err := grpcServer.Serve(lis); err != nil {
@@ -84,14 +84,14 @@ func (s *server) dbPrepare() error {
 }
 
 
-func (s *server) EnableProducts(ctx context.Context,product *messager.Product) (*messager.ProdResponse, error) {
+func (s *server) EnableProducts(ctx context.Context,product *productPB.Product) (*productPB.ProdResponse, error) {
 	prod := &Products{product.Title, product.SKU, product.AccountCode}
 	err := s.storageProductInsert(prod)
 	if err != nil {
 		log.Println(err)
-		return &messager.ProdResponse{ResponseMessage : "Something went wrong"}, err
+		return &productPB.ProdResponse{ResponseMessage : "Something went wrong"}, err
 	}	
-	return &messager.ProdResponse{ResponseMessage : "Product Created"}, nil
+	return &productPB.ProdResponse{ResponseMessage : "Product Created"}, nil
 }
 
 func (s *server) storageProductInsert(p *Products) error {
