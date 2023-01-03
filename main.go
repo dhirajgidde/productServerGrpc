@@ -27,7 +27,7 @@ type Products struct {
 //server struct 
 type server struct {
 	db      *sql.DB
-	productPB .UnimplementedMessageReceiverServer
+	productPB .UnimplementedProductMessageReceiverServer 
 }
 
 func main() {
@@ -49,7 +49,7 @@ func main() {
 		log.Println(err)
 		return
 	}
-	productPB.RegisterMessageReceiverServer(grpcServer, s)
+	productPB.RegisterProductMessageReceiverServer(grpcServer, s)
 	
 	lis, err := net.Listen("tcp", ":9001")
 	if err != nil {

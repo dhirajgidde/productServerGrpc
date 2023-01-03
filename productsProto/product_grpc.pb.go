@@ -18,86 +18,87 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// MessageReceiverClient is the client API for MessageReceiver service.
+// ProductMessageReceiverClient is the client API for ProductMessageReceiver service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type MessageReceiverClient interface {
+type ProductMessageReceiverClient interface {
 	EnableProducts(ctx context.Context, in *Product, opts ...grpc.CallOption) (*ProdResponse, error)
 }
 
-type messageReceiverClient struct {
+type productMessageReceiverClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMessageReceiverClient(cc grpc.ClientConnInterface) MessageReceiverClient {
-	return &messageReceiverClient{cc}
+func NewProductMessageReceiverClient(cc grpc.ClientConnInterface) ProductMessageReceiverClient {
+	return &productMessageReceiverClient{cc}
 }
 
-func (c *messageReceiverClient) EnableProducts(ctx context.Context, in *Product, opts ...grpc.CallOption) (*ProdResponse, error) {
+func (c *productMessageReceiverClient) EnableProducts(ctx context.Context, in *Product, opts ...grpc.CallOption) (*ProdResponse, error) {
 	out := new(ProdResponse)
-	err := c.cc.Invoke(ctx, "/messager.MessageReceiver/EnableProducts", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/messager.ProductMessageReceiver/EnableProducts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MessageReceiverServer is the server API for MessageReceiver service.
-// All implementations must embed UnimplementedMessageReceiverServer
+// ProductMessageReceiverServer is the server API for ProductMessageReceiver service.
+// All implementations must embed UnimplementedProductMessageReceiverServer
 // for forward compatibility
-type MessageReceiverServer interface {
+type ProductMessageReceiverServer interface {
 	EnableProducts(context.Context, *Product) (*ProdResponse, error)
-	mustEmbedUnimplementedMessageReceiverServer()
+	mustEmbedUnimplementedProductMessageReceiverServer()
 }
 
-// UnimplementedMessageReceiverServer must be embedded to have forward compatible implementations.
-type UnimplementedMessageReceiverServer struct {
+// UnimplementedProductMessageReceiverServer must be embedded to have forward compatible implementations.
+type UnimplementedProductMessageReceiverServer struct {
 }
 
-func (UnimplementedMessageReceiverServer) EnableProducts(context.Context, *Product) (*ProdResponse, error) {
+func (UnimplementedProductMessageReceiverServer) EnableProducts(context.Context, *Product) (*ProdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EnableProducts not implemented")
 }
-func (UnimplementedMessageReceiverServer) mustEmbedUnimplementedMessageReceiverServer() {}
+func (UnimplementedProductMessageReceiverServer) mustEmbedUnimplementedProductMessageReceiverServer() {
+}
 
-// UnsafeMessageReceiverServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MessageReceiverServer will
+// UnsafeProductMessageReceiverServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProductMessageReceiverServer will
 // result in compilation errors.
-type UnsafeMessageReceiverServer interface {
-	mustEmbedUnimplementedMessageReceiverServer()
+type UnsafeProductMessageReceiverServer interface {
+	mustEmbedUnimplementedProductMessageReceiverServer()
 }
 
-func RegisterMessageReceiverServer(s grpc.ServiceRegistrar, srv MessageReceiverServer) {
-	s.RegisterService(&MessageReceiver_ServiceDesc, srv)
+func RegisterProductMessageReceiverServer(s grpc.ServiceRegistrar, srv ProductMessageReceiverServer) {
+	s.RegisterService(&ProductMessageReceiver_ServiceDesc, srv)
 }
 
-func _MessageReceiver_EnableProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ProductMessageReceiver_EnableProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Product)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageReceiverServer).EnableProducts(ctx, in)
+		return srv.(ProductMessageReceiverServer).EnableProducts(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/messager.MessageReceiver/EnableProducts",
+		FullMethod: "/messager.ProductMessageReceiver/EnableProducts",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageReceiverServer).EnableProducts(ctx, req.(*Product))
+		return srv.(ProductMessageReceiverServer).EnableProducts(ctx, req.(*Product))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// MessageReceiver_ServiceDesc is the grpc.ServiceDesc for MessageReceiver service.
+// ProductMessageReceiver_ServiceDesc is the grpc.ServiceDesc for ProductMessageReceiver service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var MessageReceiver_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "messager.MessageReceiver",
-	HandlerType: (*MessageReceiverServer)(nil),
+var ProductMessageReceiver_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "messager.ProductMessageReceiver",
+	HandlerType: (*ProductMessageReceiverServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "EnableProducts",
-			Handler:    _MessageReceiver_EnableProducts_Handler,
+			Handler:    _ProductMessageReceiver_EnableProducts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

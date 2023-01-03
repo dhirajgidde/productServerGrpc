@@ -4,7 +4,7 @@ option go_package = "./productsProto";
 
 package messager;
 
-service MessageReceiver {
+service ProductMessageReceiver {
     rpc EnableProducts(Product) returns (ProdResponse);
 }
 
